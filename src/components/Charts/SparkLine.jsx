@@ -26,6 +26,7 @@ const SparkLine = ({ id, height, width, color, data, type, currentColor }) => {
     <Chart 
       chartType={type}
       width={width}
+      // width='250px'
       height={height}
       data={data}
     />

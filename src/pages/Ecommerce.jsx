@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import welcomeBg from "../data/welcome-bg.svg";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
@@ -12,6 +12,32 @@ import {
 import { useStateContext } from "../contexts/ContextProvider";
 
 const Ecommerce = () => {
+
+  const {screenSize, setScreenSize} = useStateContext();
+
+  const [smolChart, setSmolChart] = useState(false);
+
+  useEffect(() => {
+    // setScreenSize(window.innerWidth);
+    // console.log('The inner width size of the current screen is: ', screenSize);
+
+    const handleResize = () => setScreenSize(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if(screenSize <= 900) {
+      setSmolChart(true);
+    } else {
+      setSmolChart(false);
+    }
+  })
+
   return (
     <div className="mt-12">
       <div className="flex flex-wrap lg:flex-nowrap justify-center">
@@ -67,11 +93,11 @@ const Ecommerce = () => {
         </div>
       </div>
 
-      <div className="flex gap-10 flex-wrap justify-center">
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780 ">
-          <div className="flex justify-between">
+      <div className="flex gap-10 flex-wrap lg:flex-nowrap justify-center">
+        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780">
+          <div className="flex justify-between mx-16 md:mx-0">
             <p className="font-semibold text-xl">Revenue Updates</p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center">
               <p className="flex items-center gap-2 text-gray-600 hover:drop-shadow-xl">
                 <span>
                   <GoDotFill />
@@ -79,7 +105,7 @@ const Ecommerce = () => {
                 <span>Expense</span>
               </p>
 
-              <p className="flex items-center gap-2 text-green-600 hover:drop-shadow-xl">
+              <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
                 <span>
                   <GoDotFill />
                 </span>
@@ -87,48 +113,53 @@ const Ecommerce = () => {
               </p>
             </div>
           </div>
-          <div className="mt-10 flex gap-10 flex-wrap justify-center">
-            <div className="border-r-1 border-color m-4 pr-10">
-              <div>
-                <p>
-                  <span className="text-3xl font-semibold">$93,438</span>
-                  <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
-                    23%
-                  </span>
-                </p>
-                <p className="text-gray-500 mt-1">Budget</p>
-              </div>
-              <div className="mt-8">
-                <p>
-                  <span className="text-3xl font-semibold">$48,438</span>
-                </p>
-                <p className="text-gray-500 mt-1">Expense</p>
-              </div>
-              <div className="mt-5 bg-red-600">
-                <SparkLine
-                  currentColor="blue"
-                  id="line-sparkline"
-                  type="Line"
-                  height='120px'
-                  width='500px'
-                  data={SparklineAreaData}
-                  color="blue"
-                />
-              </div>
 
-              <div className="mt-10">
+          <div className="mt-10 flex gap-10 flex-wrap justify-center">
+            <div className="custom-div lg:w-full lg:flex flex-wrap lg:flex-nowrap justify-between">
+              <div className="md:border-r-1 md:border-color m-4 md:pr-10">
+                <div className="mx-16 md:mx-0">
+                  <p>
+                    <span className="text-3xl font-semibold">$93,438</span>
+                    <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
+                      23%
+                    </span>
+                  </p>
+                  <p className="text-gray-500 mt-1">Budget</p>
+                </div>
+                <div className="mt-8 mx-16 md:mx-0">
+                  <p>
+                    <span className="text-3xl font-semibold">$48,438</span>
+                  </p>
+                  <p className="text-gray-500 mt-1">Expense</p>
+                </div>
+                <div className="mt-5 ml-8 md:ml-0">
+                  <SparkLine
+                    currentColor="blue"
+                    id="line-sparkline"
+                    type="Line"
+                    height="120px"
+                    // width="350px"
+                    width={smolChart ? '350px' : '500px'}
+                    data={SparklineAreaData}
+                    color="blue"
+                  />
+                </div>
+
+                <div className="mt-10 mx-16 md:mx-0">
                   <Button
-                    color='white'
-                    bgColor='blue'
+                    color="white"
+                    bgColor="blue"
                     text="Download Report"
-                    borderRadius='10px'
+                    borderRadius="10px"
                   >
                     Download Report
                   </Button>
+                </div>
               </div>
-            </div>
-            <div>
-              <Stacked width="320px" height="360px" />
+
+              <div className="lg:ml-4 ml-8 md:ml-0">
+                <Stacked width="320px" height="360px" />
+              </div>
             </div>
           </div>
         </div>
